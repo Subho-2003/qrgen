@@ -31,7 +31,7 @@ public class QRCodeController {
     QRCodeRepository qrCodeRepository;
 
     @PostMapping("/generateQR")
-public ResponseEntity<byte[]> generateQRCode(@RequestParam String userId, @RequestParam String eventId) {
+public ResponseEntity<byte[]> generateQRCode(@RequestBody String userId, @RequestBody String eventId) {
     try {
 System.out.println("userId = " +userId+ "eventId = " +eventId);
 
