@@ -33,6 +33,8 @@ public class QRCodeController {
     @PostMapping("/generateQR")
 public ResponseEntity<byte[]> generateQRCode(@RequestParam String userId, @RequestParam String eventId) {
     try {
+System.out.println("userId = " +userId+ "eventId = " +eventId);
+
         String qrContent = userId + "|" + eventId + "|" + System.currentTimeMillis();
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         Map<EncodeHintType, Object> hints = new HashMap<>();
@@ -56,8 +58,6 @@ public ResponseEntity<byte[]> generateQRCode(@RequestParam String userId, @Reque
         e.printStackTrace();
         return ResponseEntity.status(500).body(null);
     }
-
-System.out.println("userId = " +userId+ "eventId = " +eventId);
 
 }
 
