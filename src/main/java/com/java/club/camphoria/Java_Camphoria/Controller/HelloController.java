@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
-    @GetMapping("/greet")
+    @GetMapping({"/greet","/"})
     public ResponseEntity<String> greet(){
         return new ResponseEntity<>("Hellow", HttpStatus.OK);
     }
