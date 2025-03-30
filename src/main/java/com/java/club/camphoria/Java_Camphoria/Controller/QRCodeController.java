@@ -56,6 +56,9 @@ public ResponseEntity<byte[]> generateQRCode(@RequestParam String userId, @Reque
         e.printStackTrace();
         return ResponseEntity.status(500).body(null);
     }
+
+System.out.println("userId = " +userId+ "eventId = " +eventId);
+
 }
 
 
