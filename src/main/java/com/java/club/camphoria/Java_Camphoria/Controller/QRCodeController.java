@@ -33,6 +33,9 @@ public class QRCodeController {
     @PostMapping("/generateQR")
 public ResponseEntity<byte[]> generateQRCode(@RequestBody String userId, @RequestBody String eventId) {
     try {
+if(userId == null || eventId == null)
+  System.out.println("No");
+else
 System.out.println("userId = " +userId+ "eventId = " +eventId);
 
         String qrContent = userId + "|" + eventId + "|" + System.currentTimeMillis();
