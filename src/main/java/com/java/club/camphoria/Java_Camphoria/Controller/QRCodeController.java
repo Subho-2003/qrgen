@@ -30,34 +30,32 @@ public class QRCodeController {
     QRCodeRepository qrCodeRepository;
 
     @PostMapping("/generateQR")
-    public ResponseEntity<byte[]> generateQRCode(@RequestParam String userId, @RequestParam String eventId) {
-        try {
-            String qrContent = userId + "|" + eventId + "|" + System.currentTimeMillis();
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+public ResponseEntity<byte[]> generateQRCode(@RequestParam String userId, @RequestParam String eventId) {
+    try {
+        String qrContent = userId + "|" + eventId + "|" + System.currentTimeMillis();
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 
-            BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, 300, 300, hints);
-            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, 300, 300, hints);
+        BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(qrImage, "png", baos);
-            byte[] qrBytes = baos.toByteArray();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(qrImage, "png", baos);
+        byte[] qrBytes = baos.toByteArray();
 
-            // Save QR Code details in the database
-            QRCodeEntity qrCodeEntity = new QRCodeEntity(null, userId, eventId, qrContent, false);
-            qrCodeRepository.save(qrCodeEntity);
+        // Set filename
+        String filename = userId + "_" + eventId + ".png";
 
-            // Return image as a downloadable response
-            return ResponseEntity.ok()
-                    .header("Content-Disposition", "attachment; filename=qr_code.png")
-                    .header("Content-Type", "image/png")
-                    .body(qrBytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
-        }
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=" + filename) // Forces download with custom filename
+                .header("Content-Type", "image/png")
+                .body(qrBytes);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(500).body(null);
     }
+}
 
 
 
